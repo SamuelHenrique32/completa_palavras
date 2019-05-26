@@ -1,11 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import HomeView from "./HomeView"
 
 function App() {
-  return (
-    
-  );
-}
+    return (
+      <div className="App">
+        <HomeView/>
+      </div>
+    );
+  }
+  
+
 
 export default App;
