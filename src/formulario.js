@@ -68,7 +68,7 @@ class Formulario extends Component {
         const { classes } = this.props
         return (
             //set de acordo com this.props
-            <Grid container hidden={this.props.hidden} className={classes.Page}>
+            <Grid container style={this.props.hidden ? {} : {display:"none"}} className={classes.Page}>
                 {/* necessita ficar dentro de container */}
                 <Grid item xs={12}>
                     <Paper className={classes.Paper}>
