@@ -15,9 +15,6 @@ const styles = {
         marginTop: '15px',
         marginRight: '25px',
         borderColor: "#2196f3"
-    },
-    Button: {
-        
     }
 };
 

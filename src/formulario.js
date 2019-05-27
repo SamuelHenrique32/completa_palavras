@@ -99,8 +99,6 @@ class Formulario extends Component {
                     </Paper>
                 </Grid>
             </Grid>
-
-
         )
     }
 }

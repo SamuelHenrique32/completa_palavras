@@ -21,6 +21,19 @@ const styles = {
         fontSize: "180px",
         marginTop: "80px",
         marginRight: "100px"
+    },
+    BotaoLimpar: {
+        color: "red",
+        borderColor: "red",
+        marginTop: "40px"
+    },
+    BotaoEnviar: {
+        color: "green",
+        borderColor: "green",
+        marginTop: "40px"
+    },
+    BotoesLimparEnviar: {
+        marginRight: "100px"
     }
 };
 
@@ -46,6 +59,7 @@ class Jogo extends Component {
         //posicao que possui o ponto de interrogacao
         //state para renderizar novamente
         var pos_interrogacao = this.state.palavras[0].valor.indexOf('?')
+        //pode continuar inserindo letras
         if(pos_interrogacao > 0){
            var p = this.state.palavras
            var palavra_atual = p[0]
@@ -81,6 +95,19 @@ class Jogo extends Component {
                         </Grid>
                         <Grid item xs={12} className={classes.Palavra}>
                             {this.state.palavras[0].valor.replace('?','_')}
+                        </Grid>
+                        <Grid container direction="row" justify="center" alignItems="center" className={classes.BotoesLimparEnviar}>
+                            {/* botoes */}
+                            <Grid item xs={2}>
+                                <Button  variant="outlined" size="large" className={classes.BotaoLimpar}>
+                                    Limpar
+                                </Button>
+                            </Grid>    
+                            <Grid item xs={2}>
+                                <Button  variant="outlined" size="large" className={classes.BotaoEnviar}>
+                                    Enviar
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
