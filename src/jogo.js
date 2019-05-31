@@ -9,14 +9,12 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import { All } from 'src/css/style'
+import { All } from './css/style'
 
 
 
 // TODO vem do banco de dados
-const palavras = [{valor: 'PA?O', correta: undefined, possibilidades: [1,2,2,2,3]},
-                  {valor: 'CA?A', correta: undefined},
-                  {valor: 'ABACA?I', correta: undefined}];
+const palavras = [{valor: 'PA?O', correta: undefined, possibilidades: [1,2,2,2,3]}]
 
 class Jogo extends Component {
     constructor(props) {
@@ -24,7 +22,7 @@ class Jogo extends Component {
 
         this.state = {
             //state recebe palavras const
-            palavras: [],
+            palavras: palavras,
             pontuação: 0,
             palavraDigitada: '',
             listDePalavrasJaFeitas:[],
@@ -38,23 +36,13 @@ class Jogo extends Component {
         // evita o carregamento da pagina (vide F5)
         event.preventDefault()
 
-        cosnt = { palavraDigitada } = this.state
+        const { palavraDigitada } = this.state
         const data = {
             //nome do campo : valor do campo
             palavraDigitada: palavraDigitada
         }
         //manda para backend um json formado por {palavraDigitada: palavraDigitada}
-        axios.post(`tua url`, data)
-            .then(
-                res => {
-                    //success
-                    this.updateDados(res.data),
-                    //error
-                    error => { 
-                        // Setar a dica que vem na request
-                        () => { console.log('Samuca deu ruin', error) } 
-                    }
-                })
+       
 
     }
 
@@ -75,8 +63,8 @@ class Jogo extends Component {
         var pos_interrogacao = this.state.palavras[0].valor.indexOf('?')
         //pode continuar inserindo letras
         if(pos_interrogacao > 0){
-           var p = this.state.palavras
-           var palavra_atual = p[0]
+           var p = this.state.palavras[0]
+           var palavra_atual = p
            var replace = palavra_atual.valor.substr(0,pos_interrogacao)+letra+palavra_atual.valor.substr(pos_interrogacao,palavra_atual.valor.length);
            palavra_atual.valor = replace.replace('?','');
            console.log(replace)
@@ -135,4 +123,4 @@ class Jogo extends Component {
     }
 }
 
-export default withStyles(styles)(Jogo);
+export default withStyles(All)(Jogo);
