@@ -2,40 +2,16 @@ import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Letras from './letras'
+import axios from 'axios';
 
 //Material UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import { All } from 'src/css/style'
 
-const styles = {
-    Jogador: {
-        marginTop: "20px",
-        marginRight: "20px",
-        fontSize: "20px",
-        fontWeight: "700",
-        fontFamily: "Impact, Charcoal, sans-serif"
-    },
-    Palavra: {
-        fontSize: "180px",
-        marginTop: "80px",
-        marginRight: "100px"
-    },
-    BotaoLimpar: {
-        color: "red",
-        borderColor: "red",
-        marginTop: "40px"
-    },
-    BotaoEnviar: {
-        color: "green",
-        borderColor: "green",
-        marginTop: "40px"
-    },
-    BotoesLimparEnviar: {
-        marginRight: "100px"
-    }
-};
+
 
 // TODO vem do banco de dados
 const palavras = [{valor: 'PA?O', correta: undefined, possibilidades: [1,2,2,2,3]},
@@ -48,14 +24,52 @@ class Jogo extends Component {
 
         this.state = {
             //state recebe palavras const
-            palavras: palavras
+            palavras: [],
+            pontuação: 0,
+            palavraDigitada: '',
+            listDePalavrasJaFeitas:[],
+            dica: ''
         }
-        this.props = props;
-
-        this.trocaLetra = this.trocaLetra.bind(this);
     }
 
-    trocaLetra(letra){
+    // Usar arrow functions em vez de batata() devido a não precisar dar bind
+    
+    send = (event) => {
+        // evita o carregamento da pagina (vide F5)
+        event.preventDefault()
+
+        cosnt = { palavraDigitada } = this.state
+        const data = {
+            //nome do campo : valor do campo
+            palavraDigitada: palavraDigitada
+        }
+        //manda para backend um json formado por {palavraDigitada: palavraDigitada}
+        axios.post(`tua url`, data)
+            .then(
+                res => {
+                    //success
+                    this.updateDados(res.data),
+                    //error
+                    error => { 
+                        // Setar a dica que vem na request
+                        () => { console.log('Samuca deu ruin', error) } 
+                    }
+                })
+
+    }
+
+    updateDados = data => {
+        const {listDePalavrasJaFeitas} = this.state
+        listDePalavrasJaFeitas.push(data.palavraEnviada)
+
+        this.setState({
+            pontuacao: this.state.pontuacao + data.pontuacao, 
+            listDePalavrasJaFeitas: listDePalavrasJaFeitas,
+            palavra: data.novaPalavra
+        })
+    }
+
+    trocaLetra = (letra) => {
         //posicao que possui o ponto de interrogacao
         //state para renderizar novamente
         var pos_interrogacao = this.state.palavras[0].valor.indexOf('?')
@@ -68,7 +82,7 @@ class Jogo extends Component {
            console.log(replace)
           
            //atualizar state, renderiza sozinho
-           this.setState({palavras: p})
+           this.setState({palavraDigitada: p})
         }
        
     }
@@ -104,7 +118,12 @@ class Jogo extends Component {
                                 </Button>
                             </Grid>    
                             <Grid item xs={2}>
-                                <Button  variant="outlined" size="large" className={classes.BotaoEnviar}>
+                                <Button  
+                                variant="outlined" 
+                                size="large" 
+                                className={classes.BotaoEnviar}
+                                onClick={this.send}
+                                >
                                     Enviar
                                 </Button>
                             </Grid>
