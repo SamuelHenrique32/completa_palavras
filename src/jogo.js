@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Letras from './letras'
+import SimpleCard from './cards'
 import axios from 'axios';
 
 //Material UI
@@ -14,8 +15,9 @@ import { All } from './css/style'
 
 
 // TODO vem do banco de dados
-const palavra_recebida = [{valor: 'PA?O', correta: undefined}]
+const palavra_recebida = [{valor: 'PA?O', correta: undefined, palavras_para_formar: 3, dica: 'Nada, voa e anda', pontuacao_da_palavra: 10, pontuacao_atual: 30}]
 const maxQuantSubstituicoes = 5
+const palavras_para_formar = 3
 
 class Jogo extends Component {
     constructor(props) {
@@ -29,7 +31,7 @@ class Jogo extends Component {
             palavra: palavra_recebida,
             pontuação: 0,
             palavraDigitada: '',
-            listDePalavrasJaFeitas:[],
+            listDePalavrasJaFeitas: [],
             dica: '',
             quantidadeSubstituicoes: 0
         }
@@ -104,14 +106,24 @@ class Jogo extends Component {
                             Jogador: {this.props.nome}
                         </Typography>
                     </Grid>
+
+                    <Grid container justify="flex-start">
+                        <Typography variant="button" className={classes.PalavrasFormadas}>
+                            Palavras Formadas:
+                        </Typography>
+                    </Grid>
                 </Grid>
                 <Grid item xs={2}>
-                    
+                    <SimpleCard></SimpleCard>
+                    <SimpleCard></SimpleCard>
                 </Grid>
                 <Grid item xs={10}>
                     <Grid container>
                         <Grid item xs={12}>
                             <Letras click={this.trocaLetra}></Letras>
+                        </Grid>
+                        <Grid item xs={12} className={classes.PalavrasParaFormar}>
+                            FORME {this.state.palavra[0].palavras_para_formar} PALAVRAS:
                         </Grid>
                         <Grid item xs={12} className={classes.Palavra}>
                             {this.state.palavra[0].valor.replace('?','_')}

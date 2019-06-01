@@ -8,7 +8,7 @@ export const All = {
     },
     Palavra: {
         fontSize: "180px",
-        marginTop: "80px",
+        marginTop: "-35px",
         marginRight: "100px"
     },
     BotaoLimpar: {
@@ -22,6 +22,19 @@ export const All = {
         marginTop: "40px"
     },
     BotoesLimparEnviar: {
+        marginRight: "100px"
+    },
+    PalavrasFormadas: {
+        color: "black",
+        marginTop: "-40px",
+        marginLeft: "40px",
+        fontSize: "15px",
+        fontWeight: "700",
+        fontFamily: "BlinkMacSystemFont"
+    },
+    PalavrasParaFormar: {
+        fontSize: "26px",
+        marginTop: "90px",
         marginRight: "100px"
     }
 };
