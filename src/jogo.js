@@ -15,7 +15,7 @@ import { All } from './css/style'
 
 
 // TODO vem do banco de dados
-const palavra_recebida = [{valor: 'PA?O', correta: undefined, palavras_para_formar: 3, dica: 'Nada, voa e anda', pontuacao_da_palavra: 10, pontuacao_atual: 30}]
+const palavra_recebida = [{valor: 'PA?O', correta: undefined, palavras_para_formar: 3, dica: 'Nada, voa e anda', pontuacao_da_palavra: 10, pontuacao_atual: 30, jogo_finalizado: 0}]
 const maxQuantSubstituicoes = 5
 const palavras_para_formar = 3
 
@@ -140,6 +140,11 @@ class Jogo extends Component {
                                     Enviar
                                 </Button>
                             </Grid>
+
+                            <Grid container justify="flex-end" className={classes.Pontuacao}>
+                                PONTUAÇÃO: {this.state.palavra[0].pontuacao_atual}
+                            </Grid>
+
                         </Grid>
                     </Grid>
                 </Grid>

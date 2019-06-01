@@ -3,7 +3,7 @@ export const All = {
         marginTop: "20px",
         marginRight: "20px",
         fontSize: "20px",
-        fontWeight: "700",
+        fontWeight: "200",
         fontFamily: "Impact, Charcoal, sans-serif"
     },
     Palavra: {
@@ -36,5 +36,10 @@ export const All = {
         fontSize: "26px",
         marginTop: "90px",
         marginRight: "100px"
+    },
+    Pontuacao: {
+        fontSize: "20px",
+        marginTop: "70px",
+        fontWeight: "600"
     }
 };
