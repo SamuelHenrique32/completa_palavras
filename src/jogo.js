@@ -14,7 +14,8 @@ import { All } from './css/style'
 
 
 // TODO vem do banco de dados
-const palavras = [{valor: 'PA?O', correta: undefined, possibilidades: [1,2,2,2,3]}]
+const palavras = [{valor: 'PA?O', correta: undefined}]
+const maxQuantSubstituicoes = 5
 
 class Jogo extends Component {
     constructor(props) {
@@ -26,9 +27,10 @@ class Jogo extends Component {
             pontuação: 0,
             palavraDigitada: '',
             listDePalavrasJaFeitas:[],
-            dica: ''
+            dica: '',
+            quantidadeSubstituicoes: 0
         }
-    }
+    }    
 
     // Usar arrow functions em vez de batata() devido a não precisar dar bind
     
@@ -57,22 +59,26 @@ class Jogo extends Component {
         })
     }
 
+    //TODO - somente quando receber a palavra do backend
+    buscaInterrogacao = () => {
+        //return this.state.palavras[0].valor.indexOf('?')
+        return 2       
+    }
+
     trocaLetra = (letra) => {
         //posicao que possui o ponto de interrogacao
         //state para renderizar novamente
-        var pos_interrogacao = this.state.palavras[0].valor.indexOf('?')
+        var pos_interrogacao = this.buscaInterrogacao()
         //pode continuar inserindo letras
-        if(pos_interrogacao > 0){
+        if(pos_interrogacao > 0 && this.state.quantidadeSubstituicoes < maxQuantSubstituicoes){
            var p = this.state.palavras[0]
            var palavra_atual = p
-           var replace = palavra_atual.valor.substr(0,pos_interrogacao)+letra+palavra_atual.valor.substr(pos_interrogacao,palavra_atual.valor.length);
-           palavra_atual.valor = replace.replace('?','');
-           console.log(replace)
-          
+           var palavra_final = palavra_atual.valor.substr(0,pos_interrogacao)+letra+palavra_atual.valor.substr(pos_interrogacao,palavra_atual.valor.length);
+           palavra_atual.valor = palavra_final.replace('?','');
+           this.state.quantidadeSubstituicoes++
            //atualizar state, renderiza sozinho
            this.setState({palavraDigitada: p})
-        }
-       
+        }       
     }
 
     render() {
