@@ -14,16 +14,19 @@ import { All } from './css/style'
 
 
 // TODO vem do banco de dados
-const palavras = [{valor: 'PA?O', correta: undefined}]
+const palavra_recebida = [{valor: 'PA?O', correta: undefined}]
 const maxQuantSubstituicoes = 5
 
 class Jogo extends Component {
     constructor(props) {
         super(props)
 
+        //constante ate receber outra palavra
+        window.localStorage.setItem('palavra_recebida_stored',palavra_recebida[0].valor)
+
         this.state = {
             //state recebe palavras const
-            palavras: palavras,
+            palavra: palavra_recebida,
             pontuação: 0,
             palavraDigitada: '',
             listDePalavrasJaFeitas:[],
@@ -35,6 +38,9 @@ class Jogo extends Component {
     // Usar arrow functions em vez de batata() devido a não precisar dar bind
     
     send = (event) => {
+
+        //window.localStorage.removeItem('usuario');
+
         // evita o carregamento da pagina (vide F5)
         event.preventDefault()
 
@@ -44,11 +50,10 @@ class Jogo extends Component {
             palavraDigitada: palavraDigitada
         }
         //manda para backend um json formado por {palavraDigitada: palavraDigitada}
-       
-
     }
 
     updateDados = data => {
+
         const {listDePalavrasJaFeitas} = this.state
         listDePalavrasJaFeitas.push(data.palavraEnviada)
 
@@ -61,8 +66,15 @@ class Jogo extends Component {
 
     //TODO - somente quando receber a palavra do backend
     buscaInterrogacao = () => {
-        //return this.state.palavras[0].valor.indexOf('?')
-        return 2       
+        var palavra_busca_interrogacao = window.localStorage.getItem('palavra_recebida_stored');
+        return palavra_busca_interrogacao.indexOf('?')+1
+    }
+
+    limpaPalavra = () => {
+        var palavra_limpa = window.localStorage.getItem('palavra_recebida_stored');        
+        this.state.palavra[0].valor = palavra_limpa
+        this.setState({palavraDigitada: palavra_limpa})
+        this.state.quantidadeSubstituicoes = 0
     }
 
     trocaLetra = (letra) => {
@@ -71,7 +83,7 @@ class Jogo extends Component {
         var pos_interrogacao = this.buscaInterrogacao()
         //pode continuar inserindo letras
         if(pos_interrogacao > 0 && this.state.quantidadeSubstituicoes < maxQuantSubstituicoes){
-           var p = this.state.palavras[0]
+           var p = this.state.palavra[0]
            var palavra_atual = p
            var palavra_final = palavra_atual.valor.substr(0,pos_interrogacao)+letra+palavra_atual.valor.substr(pos_interrogacao,palavra_atual.valor.length);
            palavra_atual.valor = palavra_final.replace('?','');
@@ -102,22 +114,17 @@ class Jogo extends Component {
                             <Letras click={this.trocaLetra}></Letras>
                         </Grid>
                         <Grid item xs={12} className={classes.Palavra}>
-                            {this.state.palavras[0].valor.replace('?','_')}
+                            {this.state.palavra[0].valor.replace('?','_')}
                         </Grid>
                         <Grid container direction="row" justify="center" alignItems="center" className={classes.BotoesLimparEnviar}>
                             {/* botoes */}
                             <Grid item xs={2}>
-                                <Button  variant="outlined" size="large" className={classes.BotaoLimpar}>
+                                <Button  variant="outlined" size="large" className={classes.BotaoLimpar} onClick={this.limpaPalavra}>
                                     Limpar
                                 </Button>
                             </Grid>    
                             <Grid item xs={2}>
-                                <Button  
-                                variant="outlined" 
-                                size="large" 
-                                className={classes.BotaoEnviar}
-                                onClick={this.send}
-                                >
+                                <Button variant="outlined" size="large" className={classes.BotaoEnviar} onClick={this.send}>
                                     Enviar
                                 </Button>
                             </Grid>
