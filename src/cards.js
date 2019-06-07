@@ -1,47 +1,41 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Component } from "react";
+// import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import PropTypes from 'prop-types';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import { All } from './css/style'
 
-const useStyles = {
-  card: {
-    minWidth: 75,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12
-  },
-};
-
-//TODO map para mostrar palavras
-const palvras_lista = ["PATO", "CHUVEIRO"]
-
-function SimpleCard() {
-  const classes = useStyles
-  const bull = <span className={classes.bullet}>•</span>;
-
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography variant="h5" component="h2">
-          PATO
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          Pontuação: 10
-        </Typography>
-      </CardContent>
-    </Card>
-  );
+class SimpleCard extends Component {
+  render() {
+    const { classes, name, qtde, error, dica } = this.props
+    const abc = error ? classes.ErrorCard : classes.SuccessCard
+    return (
+      < Card className={abc} >
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography color="textSecondary">
+            {`Pontuação: ${qtde}`}
+          </Typography>
+          {dica &&
+            <Typography color="textSecondary">
+                {`Dica:: ${dica}`}
+            </Typography>}
+        </CardContent>
+      </Card >
+    );
+  }
 }
 
-export default SimpleCard;
+
+SimpleCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  dica: PropTypes.string.isRequired,
+  qtde: PropTypes.number.isRequired,
+  error: PropTypes.bool
+};
+
+export default withStyles(All)(SimpleCard);

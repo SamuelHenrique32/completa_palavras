@@ -41,5 +41,19 @@ export const All = {
         fontSize: "20px",
         marginTop: "70px",
         fontWeight: "600"
+    },
+    Padding:{
+        padding: '10px'
+    },
+    Margin:{
+     margin: '10px'
+    },
+    ErrorCard:{
+        background:'red',
+        margin: '10px'
+    },
+    SuccessCard:{
+        background:'green',
+        margin: '10px' 
     }
 };

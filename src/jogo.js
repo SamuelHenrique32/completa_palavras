@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Letras from './letras'
 import SimpleCard from './cards'
-import axios from 'axios';
 
 //Material UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import { All } from './css/style'
 
 
@@ -31,7 +28,7 @@ class Jogo extends Component {
             palavra: palavra_recebida,
             pontuação: 0,
             palavraDigitada: '',
-            listDePalavrasJaFeitas: [],
+            palavrasPassada: [{palavra:'pato', pontuacao: 5},{palavra:'gatr', dica: 'mia'}],
             dica: '',
             quantidadeSubstituicoes: 0
         }
@@ -95,8 +92,21 @@ class Jogo extends Component {
         }       
     }
 
+    renderSimpleCard = e => {
+        if(e.dica){
+            return(
+                <SimpleCard name={e.palavra} dica={e.dica} qtde={0} error/>
+            )
+        }else{
+            return(
+                <SimpleCard name={e.palavra} qtde={e.pontuacao}/>
+            )
+        }
+    }
+
     render() {
         const { classes } = this.props
+        const { palavrasPassada } =this.state
         return (
             //set de acordo com this.props
             <Grid container style={this.props.hidden ? {} : {display:"none"}}>
@@ -113,10 +123,11 @@ class Jogo extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                    <SimpleCard></SimpleCard>
-                    <SimpleCard></SimpleCard>
+
+                <Grid item xs={2} className={classes.Padding}>
+                    {palavrasPassada.map(this.renderSimpleCard)}
                 </Grid>
+
                 <Grid item xs={10}>
                     <Grid container>
                         <Grid item xs={12}>
