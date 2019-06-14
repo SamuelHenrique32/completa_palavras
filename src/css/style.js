@@ -12,17 +12,20 @@ export const All = {
         marginRight: "100px"
     },
     BotaoLimpar: {
+        marginRight: '5px',
+        width: '100%',
         color: "red",
         borderColor: "red",
         marginTop: "40px"
     },
     BotaoEnviar: {
+        marginRight: '5px',
+        width: '100%',
         color: "green",
         borderColor: "green",
         marginTop: "40px"
     },
     BotoesLimparEnviar: {
-        marginRight: "100px"
     },
     PalavrasFormadas: {
         color: "black",
@@ -39,8 +42,7 @@ export const All = {
     },
     Pontuacao: {
         fontSize: "20px",
-        marginTop: "70px",
-        fontWeight: "600"
+        'marginRight': '5%'
     },
     Padding:{
         padding: '10px'
@@ -55,5 +57,8 @@ export const All = {
     SuccessCard:{
         background:'green',
         margin: '10px' 
+    },
+    MarginRight:{
+        marginRight:    '5px'
     }
 };
