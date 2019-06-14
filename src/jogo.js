@@ -131,12 +131,17 @@ class Jogo extends Component {
                             <Grid item xs={12} className={classes.PalavrasParaFormar}>
                                 Forme o maior numero de palavras
                         </Grid>
-                            <Grid item xs={12} className={classes.Palavra}>
+                        </Grid>
+                        <Grid container direction="row">
+                            <Grid item xs={12} lg={9} className={classes.Palavra}>
                                 {this.state.palavraRecebida.valor.replace('?', '_')}
                             </Grid>
+                            <Grid xs={12} lg={2} item justify="flex-end" className={classes.Pontuacao}>
+                             {`PONTUAÇÃO: ${pontuacao}`}
+                        </Grid>
                         </Grid>
                         <Grid container direction="row" className={classes.BotoesLimparEnviar}>
-                            <Grid item xs={6} sm={5} className={classes.MarginRight}>
+                            <Grid item xs={6} sm={6} className={classes.MarginRight}>
                                 <Button variant="outlined" size="large" className={classes.BotaoLimpar} onClick={this.limpaPalavra}>
                                     Limpar
                                 </Button>
@@ -146,9 +151,6 @@ class Jogo extends Component {
                                     Enviar
                                 </Button>
                             </Grid>
-                        </Grid>
-                        <Grid container justify="flex-end" className={classes.Pontuacao}>
-                             {`PONTUAÇÃO: ${pontuacao}`}
                         </Grid>
                     </Grid>
                 </Grid>

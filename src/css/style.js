@@ -8,8 +8,6 @@ export const All = {
     },
     Palavra: {
         fontSize: "180px",
-        marginTop: "-35px",
-        marginRight: "100px"
     },
     BotaoLimpar: {
         marginRight: '5px',
