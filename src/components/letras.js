@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Jogo from './jogo'
 
 //Material UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 
 const styles = {
     Letras: {

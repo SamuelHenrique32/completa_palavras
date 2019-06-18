@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { All } from './css/style'
+import { All } from '../css/style'
 
 class SimpleCard extends Component {
   render() {

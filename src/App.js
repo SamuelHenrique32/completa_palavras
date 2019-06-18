@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import HomeView from "./HomeView"
+import HomeView from "./containers/HomeView"
 
 function App() {
     return (
@@ -9,7 +9,4 @@ function App() {
       </div>
     );
   }
-  
-
-
 export default App;
