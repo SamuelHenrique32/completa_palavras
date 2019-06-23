@@ -1,1 +1,0 @@
-export const URL_GET_PALAVRA: 'URL_GET_PALAVRA';

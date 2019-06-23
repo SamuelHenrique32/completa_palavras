@@ -1,80 +1,28 @@
-import axios from 'axios';
 import {
-    GET_PALAVRA_REQUEST,
-    GET_PALAVRA_SUCCESS,
-    GET_PALAVRA__ERROR,
-
-    POST_PALAVRA_REQUEST,
-    POST_PALAVRA_SUCCESS,
-    POST_PALAVRA__ERROR
-
-} from './actionsTypes'
-import { URL_GET_PALAVRA, URL_POST_PALAVRA } from "../const/URL_GET_PALAVRA";
+    GET_PALAVRA_REQUEST, GET_PALAVRA_SUCCESS, GET_PALAVRA__ERROR,
+    POST_PALAVRA_REQUEST, POST_PALAVRA_SUCCESS, POST_PALAVRA__ERROR,
+    ADD_LIST_PALAVRAS_VISTAS, CHANGE_PALAVRA_DIGITADA, T
+  } from '../actions/actionsTypes'
 
 export const findPalavra = () => dispatch => {
-    dispatch(findPalavraRequest())
+    console.log('findPalavra')
+} 
 
-    return axios.get(URL_GET_PALAVRA)
-        .then(
-            res => {
-                dispatch(findPalavraSuccess(res.data))
-            },
-            error => {
-                dispatch(findPalavraError(error))
-            })
+export const sendPalavra = () => dispatch =>{
+    console.log('sendPalavra')
 }
 
-const findPalavraRequest = () => {
+export const addListPalavrasVistas = () => dispatch => {
+    console.log('addListPalavrasVistas')
+}
+
+export const changePalavraDigitada = (palavra) => dispatch => {
+    dispatch(changePalavraDigitadaRequest(palavra))
+}
+
+const changePalavraDigitadaRequest = (response) => {
     return {
-        type: GET_PALAVRA_REQUEST
+      type: CHANGE_PALAVRA_DIGITADA,
+      payload: response
     }
-}
-
-const findPalavraSuccess = (data) => {
-    return {
-        type: GET_PALAVRA_SUCCESS,
-        payload: data
-    }
-}
-
-const findPalavraError = (error) => {
-    return {
-        type: GET_PALAVRA__ERROR,
-        payload: error
-    }
-}
-
-
-
-export const sendPalavra = (data = {}) => dispatch => {
-    dispatch(sendPalavraRequest())
-
-    return axios.post(URL_POST_PALAVRA, JSON.parse(data))
-        .then(
-            res => {
-                dispatch(sendPalavraSuccess(res.data))
-            },
-            error => {
-                dispatch(sendPalavraError(error))
-            })
-}
-
-const sendPalavraRequest = () => {
-    return {
-        type: POST_PALAVRA_REQUEST
-    }
-}
-
-const sendPalavraSuccess = (data) => {
-    return {
-        type: POST_PALAVRA_SUCCESS,
-        payload: data
-    }
-}
-
-const sendPalavraError = (error) => {
-    return {
-        type: POST_PALAVRA__ERROR,
-        payload: error
-    }
-}
+  }
