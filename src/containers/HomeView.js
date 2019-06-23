@@ -1,9 +1,9 @@
 import React from 'react';
-import './App.css';
+import '../App.css';
 import { withStyles } from '@material-ui/core/styles';
 import Formulario from './formulario'
 import Grid from "@material-ui/core/Grid";
-import Jogo from './jogo.js'
+import Jogo from './jogo'
 
 const styles = {}
 
