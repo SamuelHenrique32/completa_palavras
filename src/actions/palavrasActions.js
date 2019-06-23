@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {
     GET_PALAVRA_REQUEST, GET_PALAVRA_SUCCESS, GET_PALAVRA__ERROR,
     POST_PALAVRA_REQUEST, POST_PALAVRA_SUCCESS, POST_PALAVRA__ERROR,
@@ -6,10 +7,24 @@ import {
 
 export const findPalavra = () => dispatch => {
     console.log('findPalavra')
-} 
+    return axios.get('https://jsonplaceholder.typicode.com/todos/1')
+    .then(
+        response => findPalavraSuccess(response),
+        error => findPalavraError(error)
+    )
+}
 
-export const sendPalavra = () => dispatch =>{
-    console.log('sendPalavra')
+
+const findPalavraSuccess = response => {
+    console.log(response)
+}
+
+const findPalavraError = error => {
+    console.log(error)
+}
+
+export const sendPalavra = (data) => dispatch =>{
+    console.log('sendPalavra id = {}, palavra = {}', data.id, data.palavra)
 }
 
 export const addListPalavrasVistas = () => dispatch => {

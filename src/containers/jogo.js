@@ -30,8 +30,15 @@ class Jogo extends Component {
     // Faz o envio da palavra para validação no back end
     send = (event) => {
         event.preventDefault()
-        const { palavraDigitada, palavraAtual, sendPalavra} = this.props
-        sendPalavra({id: palavraAtual.id, palavra: palavraDigitada})
+        const { 
+            palavraDigitada, 
+            palavraAtual, 
+            sendPalavra,
+            findPalavra
+        } = this.props
+        const at = palavraAtual.valor.replace('?', palavraDigitada)
+        sendPalavra({id: palavraAtual.id, palavra: at})
+        findPalavra()
     }
 
     // Limpa a string digitada
