@@ -45,15 +45,24 @@ export const All = {
     Padding:{
         padding: '10px'
     },
+    PaddingBotton:{
+        paddingBottom: '2rem'
+    },
     Margin:{
      margin: '10px'
     },
     ErrorCard:{
-        background:'red',
+        borderRadius: '5rem',
+        height: '10rem',
+        width: '10rem',
+        background:'#ed1c24',
         margin: '10px'
     },
     SuccessCard:{
-        background:'green',
+        borderRadius: '5rem',
+        height: '10rem',
+        width: '10rem',
+        background:'#72bf44',
         margin: '10px' 
     },
     MarginRight:{

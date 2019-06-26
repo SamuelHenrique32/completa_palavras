@@ -18,11 +18,11 @@ class SimpleCard extends Component {
             {name}
           </Typography>
           <Typography color="textSecondary">
-            {`Pontuação: ${qtde}`}
+            {`Pontuação: ${qtde || 0}`}
           </Typography>
           {dica &&
             <Typography color="textSecondary">
-                {`Dica:: ${dica}`}
+                {`Dica:: ${dica || ''}`}
             </Typography>}
         </CardContent>
       </Card >

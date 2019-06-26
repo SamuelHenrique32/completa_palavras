@@ -22,23 +22,42 @@ class Jogo extends Component {
         }
     }
 
-    componentDidMount(){
-        const { findPalavra } = this.props
-        findPalavra()
+    componentDidMount() {
+        // const { findPalavra } = this.props
+        // findPalavra()
     }
 
     // Faz o envio da palavra para validação no back end
     send = (event) => {
         event.preventDefault()
-        const { 
-            palavraDigitada, 
-            palavraAtual, 
-            sendPalavra,
-            findPalavra
+        const {
+            palavraDigitada,
+            palavraAtual,
+            sendPalavra
         } = this.props
         const at = palavraAtual.valor.replace('?', palavraDigitada)
-        sendPalavra({id: palavraAtual.id, palavra: at})
-        findPalavra()
+        /*
+        sendPalavra(
+            {id: palavraAtual.id, palavra: at}, 
+            this.onSuccess,
+            this.onError
+        )
+        */
+    }
+
+    // Atualiza os dados caso sucesso no envio da palavra
+    onSuccess = (data) => {
+        const { addListPalavrasVistas } = this.props
+        let { pontuacao, dica } = this.state
+        pontuacao = data.pontuacao ? pontuacao + data.pontuacao : pontuacao
+        dica = data.dica || ''
+        this.setState({ pontuacao, dica })
+        addListPalavrasVistas(data)
+    }
+
+    // Deu ruin volta pro debugger
+    onError = (error) => {
+        console.error('Temos um bug Yeajajkjdk', error)
     }
 
     // Limpa a string digitada
@@ -49,10 +68,9 @@ class Jogo extends Component {
 
     trocaLetra = event => {
         const { changePalavraDigitada, palavraDigitada } = this.props
-        let digitado = (palavraDigitada + event).toLowerCase() 
-        digitado = digitado.replace(' ','')
-        changePalavraDigitada( digitado)
-        console.log(event)
+        let digitado = (palavraDigitada + event).toLowerCase()
+        digitado = digitado.replace(' ', '')
+        changePalavraDigitada(digitado)
     }
 
     // Renderiza uma SImpleCard
@@ -72,66 +90,83 @@ class Jogo extends Component {
         const { classes, listPalavrasVistas, palavraAtual, palavraDigitada } = this.props
         const { pontuacao } = this.state
         return (
-            <Grid container style={this.props.hidden ? {} : { display: "none" }}>
-                <Grid item xs={12}>
-                    <Grid container justify="flex-end">
+            <Grid
+                container
+                className={classes.PaddingBotton}
+                style={this.props.hidden ? {} : { display: "none" }}>
+
+                <Grid container spacing={4} xs={12} sm={12} md={12} lg={12}>
+                    <Grid item xs={12} sm={12} md={4} lg={4}>
                         <Typography variant="button" gutterBottom className={classes.Jogador}>
                             Jogador: {this.props.nome}
                         </Typography>
                     </Grid>
 
-                    <Grid container justify="flex-start">
-                        <Typography variant="button" className={classes.PalavrasFormadas}>
+                    <Grid item xs={12} md={4} lg={4}>
+                        <Typography variant="button" className={classes.Jogador}>
+                            {'Forme o maior numero de palavras'}
+                        </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} md={4} lg={4}>
+                        <Typography variant="button" className={classes.Jogador}>
                             Palavras Formadas:
                         </Typography>
                     </Grid>
                 </Grid>
 
-                <Grid item xs={3} className={classes.Padding}>
-                    {listPalavrasVistas.length && listPalavrasVistas.map(this.renderSimpleCard)}
-                </Grid>
+                <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="flex-start"
+                >
 
-                <Grid item xs={9}>
-                    <Grid container>
-                        <Grid container direction="row" className={classes.Input}>
-                            <Grid item xs={12}>
-                                <Letras 
-                                click={this.trocaLetra}>
-                                </Letras>
+                    <Grid item xs={12} sm={12} md={3} lg={3} className={classes.Padding}>
+                        {listPalavrasVistas.length && listPalavrasVistas.map(this.renderSimpleCard)}
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} md={9} lg={9}>
+                        <Grid container>
+                            <Grid container direction="row" className={classes.Input}>
+                                <Grid item xs={12}>
+                                    <Letras
+                                        click={this.trocaLetra}>
+                                    </Letras>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} className={classes.PalavrasParaFormar}>
-                                {'Forme o maior numero de palavras'}
-                        </Grid>
-                        </Grid>
-                        <Grid container direction="row">
-                            <Grid item xs={12} lg={9} className={classes.Palavra}>
-                                {palavraAtual.valor.replace('?', palavraDigitada)}
+                            <Grid container direction="row">
+                                <Grid item xs={12} lg={9} className={classes.Palavra}>
+                                    {palavraAtual.valor.replace('?', palavraDigitada)}
+                                </Grid>
+                                <Grid xs={12} lg={2} item justify="flex-end" className={classes.Pontuacao}>
+                                    {`PONTUAÇÃO: ${pontuacao}`}
+                                </Grid>
                             </Grid>
-                            <Grid xs={12} lg={2} item justify="flex-end" className={classes.Pontuacao}>
-                                {`PONTUAÇÃO: ${pontuacao}`}
-                            </Grid>
-                        </Grid>
-                        <Grid container direction="row" className={classes.BotoesLimparEnviar}>
-                            <Grid item xs={6} sm={6} className={classes.MarginRight}>
-                                <Button variant="outlined" size="large" className={classes.BotaoLimpar} onClick={this.limpaPalavra}>
-                                    {'Limpar'}
-                                </Button>
-                            </Grid>
-                            <Grid item xs={6} sm={5} className={classes.MarginRight}>
-                                <Button variant="outlined" size="large" className={classes.BotaoEnviar} onClick={this.send}>
-                                    {'Enviar'}
-                                </Button>
+                            <Grid container direction="row" spacing={3} className={classes.BotoesLimparEnviar}
+                                xs={12} sm={12} md={12} lg={12}
+                            >
+                                <Grid item xs={4} sm={4} md={4} xlg={4} className={classes.MarginRight}>
+                                    <Button variant="outlined" size="large" className={classes.BotaoLimpar} onClick={this.limpaPalavra}>
+                                        {'Limpar'}
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4} sm={4} md={4} lg={4} className={classes.MarginRight}>
+                                    <Button variant="outlined" size="large" className={classes.BotaoEnviar} onClick={this.send}>
+                                        {'Enviar'}
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
+
             </Grid>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         palavraAtual: state.palavra.get.data,
         palavraDigitada: state.palavra.palavraDigitada,
@@ -155,4 +190,4 @@ Jogo.propTypes = {
 export default compose(
     withStyles(All),
     connect(mapStateToProps, mapDispatchToProps)
-  )(Jogo);
+)(Jogo);
