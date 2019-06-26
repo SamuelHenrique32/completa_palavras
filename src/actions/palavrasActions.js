@@ -2,33 +2,91 @@ import axios from 'axios'
 import {
     GET_PALAVRA_REQUEST, GET_PALAVRA_SUCCESS, GET_PALAVRA__ERROR,
     POST_PALAVRA_REQUEST, POST_PALAVRA_SUCCESS, POST_PALAVRA__ERROR,
-    ADD_LIST_PALAVRAS_VISTAS, CHANGE_PALAVRA_DIGITADA, T
-  } from '../actions/actionsTypes'
+    ADD_LIST_PALAVRAS_VISTAS, CHANGE_PALAVRA_DIGITADA
+} from '../actions/actionsTypes'
+
+import {
+    URL_GET_PALAVRA,
+    URL_POST_PALAVRA
+} from '../const/paths'
 
 export const findPalavra = () => dispatch => {
-    console.log('findPalavra')
-    return axios.get('https://jsonplaceholder.typicode.com/todos/1')
-    .then(
-        response => findPalavraSuccess(response),
-        error => findPalavraError(error)
-    )
+    dispatch(findPalavraRequest())
+    return axios.get(URL_GET_PALAVRA)
+        .then(
+            response => dispatch(findPalavraSuccess(response)),
+            error => dispatch(findPalavraError(error))
+        )
 }
 
+const findPalavraRequest = () => {
+    return{
+        type: GET_PALAVRA_REQUEST
+    }
+}
 
 const findPalavraSuccess = response => {
-    console.log(response)
+    return{
+        type: GET_PALAVRA_SUCCESS,
+        payload: response
+    }
 }
 
 const findPalavraError = error => {
-    console.log(error)
+    return{
+        type: GET_PALAVRA__ERROR,
+        payload: error
+    }
 }
 
-export const sendPalavra = (data) => dispatch =>{
-    console.log('sendPalavra id = {}, palavra = {}', data.id, data.palavra)
+export const sendPalavra = (data, onSuccess, onError) => dispatch => {
+    dispatch(sendPalavraRequest())
+    return axios.post(URL_POST_PALAVRA, data)
+    .then(
+        response => {
+            if(onSuccess){
+                onSuccess(response)
+            }
+            dispatch(sendPalavraSuccess(response))
+        },
+        error => {
+            if(onError){
+                onError()
+            }
+            dispatch(sendPalavraError(error))
+        }
+    )
 }
 
-export const addListPalavrasVistas = () => dispatch => {
-    console.log('addListPalavrasVistas')
+const sendPalavraRequest = () => {
+    return{
+        type: POST_PALAVRA_REQUEST
+    }
+}
+
+const sendPalavraSuccess = response => {
+    return{
+        type: POST_PALAVRA_SUCCESS,
+        payload: response
+    }
+}
+
+const sendPalavraError = error => {
+    return{
+        type: POST_PALAVRA__ERROR,
+        payload: error
+    }
+}
+
+export const addListPalavrasVistas = (data) => dispatch => {
+    dispatch(addListPalavrasVistasRequest(data))
+}
+
+const addListPalavrasVistasRequest = (response) => {
+    return {
+        type: ADD_LIST_PALAVRAS_VISTAS,
+        payload: response
+    }
 }
 
 export const changePalavraDigitada = (palavra) => dispatch => {
@@ -37,7 +95,7 @@ export const changePalavraDigitada = (palavra) => dispatch => {
 
 const changePalavraDigitadaRequest = (response) => {
     return {
-      type: CHANGE_PALAVRA_DIGITADA,
-      payload: response
+        type: CHANGE_PALAVRA_DIGITADA,
+        payload: response
     }
-  }
+}
