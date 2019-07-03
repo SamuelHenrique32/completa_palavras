@@ -13,13 +13,15 @@ class SimpleCard extends Component {
     const abc = error ? classes.ErrorCard : classes.SuccessCard
     return (
       < Card className={abc} >
-        <CardContent>
+        <CardContent className={classes.Old}>
           <Typography variant="h5" component="h2">
-            {name}
+            {name.toUpperCase()}
           </Typography>
-          <Typography color="textSecondary">
-            {`Pontuação: ${qtde || 0}`}
-          </Typography>
+          {qtde &&
+            <Typography color="textSecondary">
+              {`Pontuação: ${qtde}`}
+            </Typography>
+          }
           {dica &&
             <Typography color="textSecondary">
                 {`Dica:: ${dica || ''}`}

@@ -56,16 +56,26 @@ export const All = {
         height: '10rem',
         width: '10rem',
         background:'#ed1c24',
-        margin: '10px'
+        margin: '10px',
+        display: 'flex',
+        alignItems: 'center'
     },
     SuccessCard:{
         borderRadius: '5rem',
         height: '10rem',
         width: '10rem',
         background:'#72bf44',
-        margin: '10px' 
+        margin: '10px',
+        display: 'flex',
+        alignItems: 'center'
     },
     MarginRight:{
         marginRight:    '5px'
+    },
+    Old:{
+    width:'80%'
+    },
+    Dica: {
+        color: 'red'
     }
 };
