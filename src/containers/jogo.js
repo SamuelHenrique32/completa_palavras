@@ -23,36 +23,48 @@ class Jogo extends Component {
     }
 
     componentDidMount() {
-        // const { findPalavra } = this.props
-        // findPalavra()
+        const { findPalavra } = this.props
+        findPalavra(0, this.getPalavraOnSuccess)
     }
 
+    getPalavraOnSuccess = (data) => {
+        this.setState({palavraId: data.id})
+    }
     // Faz o envio da palavra para validação no back end
     send = (event) => {
-        event.preventDefault()
         const {
             palavraDigitada,
             palavraAtual,
             sendPalavra
         } = this.props
-        const at = palavraAtual.valor.replace('?', palavraDigitada)
-        /*
-        sendPalavra(
-            {id: palavraAtual.id, palavra: at}, 
-            this.onSuccess,
-            this.onError
-        )
-        */
+        const at = palavraAtual.palavra.replace('?', palavraDigitada)
+        this.setState({ at }, () => {
+            sendPalavra(
+                { id: palavraAtual.id, palavra: at },
+                this.onSuccess,
+                this.onError
+            )
+        })
     }
 
     // Atualiza os dados caso sucesso no envio da palavra
     onSuccess = (data) => {
-        const { addListPalavrasVistas } = this.props
-        let { pontuacao, dica } = this.state
-        pontuacao = data.pontuacao ? pontuacao + data.pontuacao : pontuacao
-        dica = data.dica || ''
-        this.setState({ pontuacao, dica })
-        addListPalavrasVistas(data)
+        const { addListPalavrasVistas, findPalavra } = this.props
+        let { pontuacao, palavraId, at } = this.state
+        if(data.palavra_correta){
+            pontuacao += 10
+            this.setState({ pontuacao, dica: ''}, () => {
+                addListPalavrasVistas({...data, palavraId, pontuacao})
+                this.limpaPalavra()
+                findPalavra(this.state.pontuacao, this.getPalavraOnSuccess)
+            })
+        }else{
+           addListPalavrasVistas({...data, palavraId, at})
+           this.setState({dica: data.dica })
+           this.limpaPalavra()
+        }
+        
+        this.forceUpdate()
     }
 
     // Deu ruin volta pro debugger
@@ -74,21 +86,31 @@ class Jogo extends Component {
     }
 
     // Renderiza uma SImpleCard
-    renderSimpleCard = e => {
-        if (e.dica) {
-            return (
-                <SimpleCard name={e.palavra} dica={e.dica} qtde={0} error />
-            )
-        } else {
-            return (
-                <SimpleCard name={e.palavra} qtde={e.pontuacao} />
-            )
+    renderSimpleCard = (e, i, a) => {
+        console.log(a)
+        if(e.palavra_correta !== undefined){
+            if (!e.palavra_correta) {
+                return (
+                    <SimpleCard name={e.at} dica={e.dica} error />
+                )
+            } else {
+                return (
+                    <SimpleCard name={e.palavraId} qtde={e.pontuacao} />
+                )
+            }
         }
     }
 
     render() {
-        const { classes, listPalavrasVistas, palavraAtual, palavraDigitada } = this.props
-        const { pontuacao } = this.state
+        const { 
+            classes, 
+            listPalavrasVistas, 
+            palavraAtual, 
+            palavraDigitada,
+            buscando
+         } = this.props
+        const { pontuacao, dica } = this.state
+        const corretas = listPalavrasVistas.filter(e => e.palavra_correta)
         return (
             <Grid
                 container
@@ -110,7 +132,7 @@ class Jogo extends Component {
 
                     <Grid item xs={12} md={4} lg={4}>
                         <Typography variant="button" className={classes.Jogador}>
-                            Palavras Formadas:
+                            {`Palavras Formadas:${corretas.length}`}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -137,11 +159,16 @@ class Jogo extends Component {
                             </Grid>
                             <Grid container direction="row">
                                 <Grid item xs={12} lg={9} className={classes.Palavra}>
-                                    {palavraAtual.valor.replace('?', palavraDigitada)}
+                                    {!buscando && palavraAtual.palavra && palavraAtual.palavra.replace('?', palavraDigitada)}
                                 </Grid>
                                 <Grid xs={12} lg={2} item justify="flex-end" className={classes.Pontuacao}>
                                     {`PONTUAÇÃO: ${pontuacao}`}
                                 </Grid>
+                                {dica &&
+                                    <Grid xs={12} lg={2} item className={classes.Dica}>
+                                        {`Dica: ${dica}`}
+                                    </Grid>
+                                }
                             </Grid>
                             <Grid container direction="row" spacing={3} className={classes.BotoesLimparEnviar}
                                 xs={12} sm={12} md={12} lg={12}
@@ -168,6 +195,7 @@ class Jogo extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        buscando: state.palavra.get.buscando,
         palavraAtual: state.palavra.get.data,
         palavraDigitada: state.palavra.palavraDigitada,
         listPalavrasVistas: state.palavra.palavrasVista.list

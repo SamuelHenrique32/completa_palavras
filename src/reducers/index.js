@@ -9,6 +9,7 @@ import {
 const initialState = {
     palavrasVista: {
         list: [
+            /*
             {
                 palavra: 'macaco',
                 pontuacoa: 30,
@@ -17,13 +18,11 @@ const initialState = {
                 palavra: 'garc',
                 dica: 'Animal que mia'
             }
+            */
         ]
     },
     get: {
-        data: {
-            valor:   'te?te',
-            id: '01'
-        },
+        data: {},
         error: null,
         buscando: false
     },
@@ -63,7 +62,6 @@ const palavra =  (state = initialState, action) => {
                 get: {
                     ...state.get,
                     buscando: false,
-                    data: {},
                     error: action.payload
                 }
             };
@@ -101,7 +99,7 @@ const palavra =  (state = initialState, action) => {
 
         case ADD_LIST_PALAVRAS_VISTAS:
             const list = state.palavrasVista.list
-            list.push(action.payload)
+            list.unshift(action.payload)
             return {
                 ...state,
                 palavrasVista: {

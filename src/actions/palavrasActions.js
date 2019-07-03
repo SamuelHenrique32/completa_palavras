@@ -10,11 +10,17 @@ import {
     URL_POST_PALAVRA
 } from '../const/paths'
 
-export const findPalavra = () => dispatch => {
+export const findPalavra = ( pontuacao, callback) => dispatch => {
+    const url = URL_GET_PALAVRA + '?pontuacao=' + pontuacao
     dispatch(findPalavraRequest())
-    return axios.get(URL_GET_PALAVRA)
+    return axios.get(url)
         .then(
-            response => dispatch(findPalavraSuccess(response)),
+            response => {
+                if(callback){
+                    callback(response.data)
+                }
+                dispatch(findPalavraSuccess(response.data))
+            },
             error => dispatch(findPalavraError(error))
         )
 }
@@ -40,14 +46,15 @@ const findPalavraError = error => {
 }
 
 export const sendPalavra = (data, onSuccess, onError) => dispatch => {
+    const url = URL_POST_PALAVRA + '?id=' + data.id + '&palavra=' + data.palavra
     dispatch(sendPalavraRequest())
-    return axios.post(URL_POST_PALAVRA, data)
+    return axios.post(url, data)
     .then(
         response => {
             if(onSuccess){
-                onSuccess(response)
+                onSuccess(response.data)
             }
-            dispatch(sendPalavraSuccess(response))
+            dispatch(sendPalavraSuccess(response.data))
         },
         error => {
             if(onError){
