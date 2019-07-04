@@ -24,10 +24,15 @@ class Jogo extends Component {
 
     componentDidMount() {
         const { findPalavra } = this.props
-        findPalavra(0, this.getPalavraOnSuccess)
+        findPalavra(10, this.getPalavraOnSuccess)
     }
 
     getPalavraOnSuccess = (data) => {
+        if(data){
+            console.log(data)
+        }else{
+        console.log('fim de jpgp')
+        }
         this.setState({palavraId: data.id})
     }
     // Faz o envio da palavra para validação no back end
