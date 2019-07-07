@@ -77,5 +77,11 @@ export const All = {
     },
     Dica: {
         color: 'red'
+    },
+    finalContainer:{
+        marginTop: "35vh"
+    },
+    finalText:{
+        color:"#2196f3"
     }
 };

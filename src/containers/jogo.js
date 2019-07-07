@@ -18,7 +18,8 @@ class Jogo extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            pontuacao: 0
+            pontuacao: 0,
+            isFinal: false
         }
     }
 
@@ -28,12 +29,12 @@ class Jogo extends Component {
     }
 
     getPalavraOnSuccess = (data) => {
-        if(data){
+        if (data) {
             console.log(data)
-        }else{
-        console.log('fim de jpgp')
+        } else {
+            this.setState({isFinal:true});
         }
-        this.setState({palavraId: data.id})
+        this.setState({ palavraId: data.id })
     }
     // Faz o envio da palavra para validação no back end
     send = (event) => {
@@ -56,19 +57,19 @@ class Jogo extends Component {
     onSuccess = (data) => {
         const { addListPalavrasVistas, findPalavra } = this.props
         let { pontuacao, palavraId, at } = this.state
-        if(data.palavra_correta){
+        if (data.palavra_correta) {
             pontuacao += 10
-            this.setState({ pontuacao, dica: ''}, () => {
-                addListPalavrasVistas({...data, palavraId, pontuacao})
+            this.setState({ pontuacao, dica: '' }, () => {
+                addListPalavrasVistas({ ...data, palavraId, pontuacao })
                 this.limpaPalavra()
                 findPalavra(this.state.pontuacao, this.getPalavraOnSuccess)
             })
-        }else{
-           addListPalavrasVistas({...data, palavraId, at})
-           this.setState({dica: data.dica })
-           this.limpaPalavra()
+        } else {
+            addListPalavrasVistas({ ...data, palavraId, at })
+            this.setState({ dica: data.dica })
+            this.limpaPalavra()
         }
-        
+
         this.forceUpdate()
     }
 
@@ -93,7 +94,7 @@ class Jogo extends Component {
     // Renderiza uma SImpleCard
     renderSimpleCard = (e, i, a) => {
         console.log(a)
-        if(e.palavra_correta !== undefined){
+        if (e.palavra_correta !== undefined) {
             if (!e.palavra_correta) {
                 return (
                     <SimpleCard name={e.at} dica={e.dica} error />
@@ -107,13 +108,13 @@ class Jogo extends Component {
     }
 
     render() {
-        const { 
-            classes, 
-            listPalavrasVistas, 
-            palavraAtual, 
+        const {
+            classes,
+            listPalavrasVistas,
+            palavraAtual,
             palavraDigitada,
             buscando
-         } = this.props
+        } = this.props
         const { pontuacao, dica } = this.state
         const corretas = listPalavrasVistas.filter(e => e.palavra_correta)
         return (
@@ -141,12 +142,25 @@ class Jogo extends Component {
                         </Typography>
                     </Grid>
                 </Grid>
-
+                <Grid
+                    container
+                    justify="center"
+                    style={this.state.isFinal ? {} : { display: "none" }}
+                    className={classes.finalContainer}
+                >
+                    <Grid item xs={12} >
+                        <Typography variant="h1" className={classes.finalText}>Fim de Jogo</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h2" className={classes.finalText}>Sua pontuação: {this.state.pontuacao}</Typography>
+                    </Grid>
+                </Grid>
                 <Grid
                     container
                     direction="row"
                     justify="center"
                     alignItems="flex-start"
+                    style={!this.state.isFinal ? {} : { display: "none" }}
                 >
 
                     <Grid item xs={12} sm={12} md={3} lg={3} className={classes.Padding}>
