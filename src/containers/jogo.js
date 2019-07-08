@@ -29,7 +29,7 @@ class Jogo extends Component {
     }
 
     getPalavraOnSuccess = (data) => {
-        if (data) {
+        if (data.id) {
             console.log(data)
         } else {
             this.setState({isFinal:true});
@@ -62,7 +62,7 @@ class Jogo extends Component {
             this.setState({ pontuacao, dica: '' }, () => {
                 addListPalavrasVistas({ ...data, palavraId, pontuacao })
                 this.limpaPalavra()
-                findPalavra(this.state.pontuacao, this.getPalavraOnSuccess)
+                findPalavra(this.state.pontuacao + 10, this.getPalavraOnSuccess)
             })
         } else {
             addListPalavrasVistas({ ...data, palavraId, at })
