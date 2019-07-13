@@ -1,3 +1,9 @@
+Desenvolvido para a disciplina Projeto de Software da Universidade de Caxias do Sul
+
+Prof. Daniel Luis Notari
+
+Vídeo explicativo do software: https://www.youtube.com/watch?v=zSWASdQh3x8
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
